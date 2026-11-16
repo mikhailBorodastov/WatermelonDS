@@ -106,7 +106,8 @@ android {
         }
         create("nightly") {
             dimension = "build"
-            applicationIdSuffix = ".nightly"
+            // Cocoon launcher knows this id as "MelonDS Dev (Dual Screen Fork)"
+            applicationId = "me.magnum.melonds.dev"
         }
     }
     externalNativeBuild {
