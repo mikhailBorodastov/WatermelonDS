@@ -210,8 +210,11 @@ class DefaultLayoutProvider(
                 *screenComponents,
                 PositionedLayoutComponent(dpadView, LayoutComponent.DPAD),
                 PositionedLayoutComponent(buttonsView, LayoutComponent.BUTTONS),
-                PositionedLayoutComponent(Rect(safeLeft, safeTop, lrButtonsSize, lrButtonsSize), LayoutComponent.BUTTON_L),
-                PositionedLayoutComponent(Rect(width - safeRight - lrButtonsSize, safeTop, lrButtonsSize, lrButtonsSize), LayoutComponent.BUTTON_R),
+                PositionedLayoutComponent(Rect(safeLeft, safeTop + smallButtonsSize + spacing4dp, lrButtonsSize, lrButtonsSize), LayoutComponent.BUTTON_L),
+                PositionedLayoutComponent(Rect(width - safeRight - lrButtonsSize, safeTop + smallButtonsSize + spacing4dp, lrButtonsSize, lrButtonsSize), LayoutComponent.BUTTON_R),
+                PositionedLayoutComponent(Rect(safeLeft, safeTop, smallButtonsSize, smallButtonsSize), LayoutComponent.BUTTON_TOGGLE_EXTERNAL_DISPLAY),
+                PositionedLayoutComponent(Rect(safeLeft + smallButtonsSize + spacing4dp, safeTop, smallButtonsSize, smallButtonsSize), LayoutComponent.BUTTON_QUICK_SAVE),
+                PositionedLayoutComponent(Rect(width - safeRight - smallButtonsSize, safeTop, smallButtonsSize, smallButtonsSize), LayoutComponent.BUTTON_QUICK_LOAD),
                 PositionedLayoutComponent(Rect((width - spacing4dp) / 2 - smallButtonsSize, height - safeBottom - smallButtonsSize, smallButtonsSize, smallButtonsSize), LayoutComponent.BUTTON_SELECT),
                 PositionedLayoutComponent(Rect((width + spacing4dp) / 2, height - safeBottom - smallButtonsSize, smallButtonsSize, smallButtonsSize), LayoutComponent.BUTTON_START),
                 PositionedLayoutComponent(Rect(width / 2 - (smallButtonsSize * 2.0 + spacing4dp * 1.5).toInt(), safeTop, smallButtonsSize, smallButtonsSize), LayoutComponent.BUTTON_HINGE),
@@ -292,6 +295,7 @@ class DefaultLayoutProvider(
         val lrButtonsSize = screenUnitsConverter.dpToPixels(50f).toInt()
         val smallButtonsSize = screenUnitsConverter.dpToPixels(40f).toInt()
         val spacing8dp = screenUnitsConverter.dpToPixels(8f).toInt()
+        val spacing4dp = screenUnitsConverter.dpToPixels(4f).toInt()
 
         // Position to the left of the fold, attached to the fold. As big as the screen allows
         var topScreenWidth = mainFold.foldBounds.x - safeLeft
@@ -327,8 +331,11 @@ class DefaultLayoutProvider(
                 PositionedLayoutComponent(bottomScreenView, LayoutComponent.BOTTOM_SCREEN),
                 PositionedLayoutComponent(dpadView, LayoutComponent.DPAD),
                 PositionedLayoutComponent(buttonsView, LayoutComponent.BUTTONS),
-                PositionedLayoutComponent(Rect(safeLeft, safeTop, lrButtonsSize, lrButtonsSize), LayoutComponent.BUTTON_L),
-                PositionedLayoutComponent(Rect(width - safeRight - lrButtonsSize, safeTop, lrButtonsSize, lrButtonsSize), LayoutComponent.BUTTON_R),
+                PositionedLayoutComponent(Rect(safeLeft, safeTop + smallButtonsSize + spacing4dp, lrButtonsSize, lrButtonsSize), LayoutComponent.BUTTON_L),
+                PositionedLayoutComponent(Rect(width - safeRight - lrButtonsSize, safeTop + smallButtonsSize + spacing4dp, lrButtonsSize, lrButtonsSize), LayoutComponent.BUTTON_R),
+                PositionedLayoutComponent(Rect(safeLeft, safeTop, smallButtonsSize, smallButtonsSize), LayoutComponent.BUTTON_TOGGLE_EXTERNAL_DISPLAY),
+                PositionedLayoutComponent(Rect(safeLeft + smallButtonsSize + spacing4dp, safeTop, smallButtonsSize, smallButtonsSize), LayoutComponent.BUTTON_QUICK_SAVE),
+                PositionedLayoutComponent(Rect(width - safeRight - smallButtonsSize, safeTop, smallButtonsSize, smallButtonsSize), LayoutComponent.BUTTON_QUICK_LOAD),
                 PositionedLayoutComponent(Rect(mainFold.foldBounds.x - smallButtonsSize - spacing8dp, height - safeBottom - smallButtonsSize, smallButtonsSize, smallButtonsSize), LayoutComponent.BUTTON_SELECT),
                 PositionedLayoutComponent(Rect(mainFold.foldBounds.right + spacing8dp, height - safeBottom - smallButtonsSize, smallButtonsSize, smallButtonsSize), LayoutComponent.BUTTON_START),
                 PositionedLayoutComponent(Rect(mainFold.foldBounds.x - smallButtonsSize * 2 - spacing8dp * 2, safeTop, smallButtonsSize, smallButtonsSize), LayoutComponent.BUTTON_HINGE),

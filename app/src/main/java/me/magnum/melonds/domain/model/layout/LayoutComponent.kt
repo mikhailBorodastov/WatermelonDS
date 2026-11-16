@@ -26,7 +26,8 @@ enum class LayoutComponent(val matchingInputs: List<Input>) {
     BUTTON_B(listOf(Input.B)),
     BUTTON_X(listOf(Input.X)),
     BUTTON_Y(listOf(Input.Y)),
-    SLOT2_ANALOG(emptyList());
+    SLOT2_ANALOG(emptyList()),
+    BUTTON_TOGGLE_EXTERNAL_DISPLAY(listOf(Input.TOGGLE_EXTERNAL_DISPLAY));
 
     fun isScreen(): Boolean {
         return this == TOP_SCREEN || this == BOTTOM_SCREEN || this == HYBRID_SCREEN
