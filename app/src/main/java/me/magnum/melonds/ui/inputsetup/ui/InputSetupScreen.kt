@@ -518,6 +518,7 @@ private fun getInputName(input: Input): String? {
         Input.CYCLE_LAYOUT -> R.string.input_cycle_layout
         Input.EXIT_GAME -> R.string.input_exit_game
         Input.SCREENSHOT -> R.string.input_screenshot
+        Input.TOGGLE_EXTERNAL_DISPLAY -> R.string.input_toggle_external_display
         else -> return null
     }
 

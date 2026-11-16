@@ -13,6 +13,8 @@ sealed class ToastEvent {
     data object QuickSaveSuccessful : ToastEvent()
     data object QuickLoadSuccessful : ToastEvent()
     data class ScreenshotSaved(val fileName: String) : ToastEvent()
+    data class QuickSavedToSlot(val slot: Int) : ToastEvent()
+    data class QuickLoadedFromSlot(val slot: Int) : ToastEvent()
     data object ScreenshotFailed : ToastEvent()
     data object CannotLoadSaveStatesWhenRAHardcoreIsEnabled : ToastEvent()
     data object CannotUseCheatsWhenRAHardcoreIsEnabled : ToastEvent()

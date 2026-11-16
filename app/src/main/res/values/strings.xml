@@ -1189,4 +1189,9 @@
     <string name="dsi_profile_make_default">Set as default</string>
     <string name="dsi_profile_missing">Profile unavailable</string>
     <string name="dsi_profile_remove_description">Remove this profile from settings? Its files will remain. Games assigned to it will need another profile before they can start.</string>
+    <string name="quick_saved_to_slot">Saved to slot %1$d</string>
+    <string name="quick_loaded_from_slot">Loaded slot %1$d</string>
+    <string name="input_toggle_external_display">Toggle second screen (free it for other apps)</string>
+    <string name="external_display_released">Second screen released</string>
+    <string name="external_display_restored">Second screen restored</string>
 </resources>

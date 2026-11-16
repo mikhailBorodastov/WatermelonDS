@@ -25,12 +25,12 @@ class FileSystemSaveStatesRepository(
         val saveStateDirectoryDocument = getSaveStateDirectoryDocument(rom) ?: return emptyList()
         val romFileName = getRomFileNameWithoutExtension(rom) ?: return emptyList()
 
-        val saveStateSlots = Array(9) {
+        val saveStateSlots = Array(SaveStateSlot.MAX_SLOT + 1) {
             SaveStateSlot(it, false, null, null)
         }
-        val fileNameRegex = "${Regex.escape(romFileName)}\\.ml[0-8]".toRegex()
+        val fileNameRegex = "${Regex.escape(romFileName)}\\.ml([0-9]|1[0-2])".toRegex()
         listSaveStateFiles(saveStateDirectoryDocument) { it.matches(fileNameRegex) }.forEach {
-            val slotNumber = it.name.last().digitToInt()
+            val slotNumber = it.name.substringAfterLast(".ml").toInt()
             val slot = SaveStateSlot(slotNumber, true, Date(it.lastModified), null)
             val screenshotUri = saveStateScreenshotProvider.getRomSaveStateScreenshotUri(rom, slot)
             saveStateSlots[slotNumber] = slot.copy(screenshot = screenshotUri)
@@ -46,6 +46,18 @@ class FileSystemSaveStatesRepository(
         val slot = SaveStateSlot(SaveStateSlot.QUICK_SAVE_SLOT, saveStateExists, lastModified, null)
         val screenshotUri = saveStateScreenshotProvider.getRomSaveStateScreenshotUri(rom, slot)
         return slot.copy(screenshot = screenshotUri)
+    }
+
+    override fun getRomRotatingQuickSaveSlot(rom: Rom): SaveStateSlot {
+        val latest = getRomLatestRotatingSlot(rom)
+        val nextSlotNumber = if (latest == null) 1 else latest.slot % SaveStateSlot.MAX_SLOT + 1
+        return getRomSaveStates(rom).getOrNull(nextSlotNumber) ?: SaveStateSlot(nextSlotNumber, false, null, null)
+    }
+
+    override fun getRomLatestRotatingSlot(rom: Rom): SaveStateSlot? {
+        return getRomSaveStates(rom)
+            .filter { it.slot in 1..SaveStateSlot.MAX_SLOT && it.exists && it.lastUsedDate != null }
+            .maxByOrNull { it.lastUsedDate!!.time }
     }
 
     override fun getRomSaveStateUri(rom: Rom, saveState: SaveStateSlot): Uri {

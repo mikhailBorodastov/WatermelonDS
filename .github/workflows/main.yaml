@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: melonDS Android Nightly Build
+name: WatermelonDS Thor Build
 
 # Controls when the action will run.
 on:
@@ -52,8 +52,6 @@ jobs:
           echo "MELONDS_KEY_PASSWORD=$MELONDS_KEYSTORE_PASSWORD" >> local.properties
           chmod +x ./gradlew
           ./gradlew :app:regenerateVulkanSpirv :app:assembleGitHubNightlyRelease
-          git tag -m "Nightly Release" -f -a nightly-release
-          git push -f origin refs/tags/nightly-release
 
       - name: Report Vulkan SPIR-V Header Changes
         if: always()
@@ -65,19 +63,6 @@ jobs:
           else
             echo "No Vulkan SPIR-V header changes detected."
           fi
-
-      - name: Update GitHub Nightly Release
-        id: update_release
-        uses: ncipollo/release-action@v1
-        with:
-          allowUpdates: true
-          prerelease: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-          tag: nightly-release
-          name: 'Nightly Build'
-          body: 'The currently Nightly Build. Whenever new changes are pushed, you can find the latest build here. You can keep this installation alongside your main one.'
-          artifacts: app/build/outputs/apk/gitHubNightly/release/app-gitHub-nightly-release.apk
-          artifactContentType: application/vnd.android.package-archive
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4

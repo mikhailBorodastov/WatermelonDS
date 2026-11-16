@@ -2300,9 +2300,9 @@ class EmulatorViewModel @Inject constructor(
             is EmulatorState.RunningRom -> {
                 sessionCoroutineScope.launch {
                     emulatorManager.pauseEmulator()
-                    val quickSlot = getRomQuickSaveStateSlot(currentState.rom)
+                    val quickSlot = withContext(Dispatchers.IO) { saveStatesRepository.getRomRotatingQuickSaveSlot(currentState.rom) }
                     if (saveRomState(currentState.rom, quickSlot)) {
-                        _toastEvent.emit(ToastEvent.QuickSaveSuccessful)
+                        _toastEvent.emit(ToastEvent.QuickSavedToSlot(quickSlot.slot))
                     }
                     resumeEmulatorIfSessionCanRun()
                 }
@@ -2323,9 +2323,10 @@ class EmulatorViewModel @Inject constructor(
                 if (emulatorSession.areSaveStateLoadsAllowed()) {
                     sessionCoroutineScope.launch {
                         emulatorManager.pauseEmulator()
-                        val quickSlot = getRomQuickSaveStateSlot(currentState.rom)
+                        val quickSlot = withContext(Dispatchers.IO) { saveStatesRepository.getRomLatestRotatingSlot(currentState.rom) }
+                            ?: getRomQuickSaveStateSlot(currentState.rom)
                         if (loadRomState(currentState.rom, quickSlot)) {
-                            _toastEvent.emit(ToastEvent.QuickLoadSuccessful)
+                            _toastEvent.emit(ToastEvent.QuickLoadedFromSlot(quickSlot.slot))
                         }
                         resumeEmulatorIfSessionCanRun()
                     }

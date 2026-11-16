@@ -628,4 +628,9 @@
         <item>Внизу</item>
         <item>Справа</item>
     </string-array>
+    <string name="quick_saved_to_slot">Сохранено: слот %1$d</string>
+    <string name="quick_loaded_from_slot">Загружен слот %1$d</string>
+    <string name="input_toggle_external_display">Освободить/вернуть второй экран</string>
+    <string name="external_display_released">Второй экран освобождён</string>
+    <string name="external_display_restored">Второй экран возвращён</string>
 </resources>

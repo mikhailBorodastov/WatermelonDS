@@ -7,5 +7,7 @@ data class SaveStateSlot(val slot: Int, val exists: Boolean, val lastUsedDate: D
 
     companion object {
         const val QUICK_SAVE_SLOT = 0
+        /** Number of regular slots (1..MAX_SLOT). Quick save/load rotate through all of them. */
+        const val MAX_SLOT = 12
     }
 }

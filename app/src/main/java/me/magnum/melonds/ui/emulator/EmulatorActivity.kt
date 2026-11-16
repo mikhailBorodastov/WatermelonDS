@@ -275,6 +275,8 @@ class EmulatorActivity : AppCompatActivity() {
     private var isFrameRenderCoordinatorStopped = false
     private var excludeTouchScreenFromSystemGestures = false
     private var externalDisplayMode = ExternalDisplayMode.MELON_DUAL_DS
+    /** When true, the second display is released (both DS screens go to the main display) so other apps can use it. */
+    private var externalDisplayReleased = false
     private val frontendInputHandler = object : FrontendInputHandler() {
         var fastForwardEnabled = false
             private set
@@ -350,6 +352,13 @@ class EmulatorActivity : AppCompatActivity() {
 
         override fun onScreenshot() {
             viewModel.takeScreenshot()
+        }
+
+        override fun onToggleExternalDisplay() {
+            externalDisplayReleased = !externalDisplayReleased
+            updateDisplays()
+            val message = if (externalDisplayReleased) R.string.external_display_released else R.string.external_display_restored
+            Toast.makeText(this@EmulatorActivity, message, Toast.LENGTH_SHORT).show()
         }
 
         override fun onRewind() {
@@ -933,6 +942,8 @@ class EmulatorActivity : AppCompatActivity() {
                         ToastEvent.GbaLoadFailed -> getString(R.string.error_load_gba_rom) to Toast.LENGTH_SHORT
                         ToastEvent.QuickSaveSuccessful -> getString(R.string.saved) to Toast.LENGTH_SHORT
                         ToastEvent.QuickLoadSuccessful -> getString(R.string.loaded) to Toast.LENGTH_SHORT
+                        is ToastEvent.QuickSavedToSlot -> getString(R.string.quick_saved_to_slot, it.slot) to Toast.LENGTH_SHORT
+                        is ToastEvent.QuickLoadedFromSlot -> getString(R.string.quick_loaded_from_slot, it.slot) to Toast.LENGTH_SHORT
                         is ToastEvent.ScreenshotSaved -> getString(R.string.screenshot_saved, it.fileName) to Toast.LENGTH_SHORT
                         ToastEvent.ScreenshotFailed -> getString(R.string.screenshot_failed) to Toast.LENGTH_LONG
                         ToastEvent.RewindNotEnabled -> getString(R.string.rewind_not_enabled) to Toast.LENGTH_SHORT
@@ -1552,7 +1563,7 @@ class EmulatorActivity : AppCompatActivity() {
         }
         val currentDisplay = ContextCompat.getDisplayOrDefault(this)
         val secondaryDisplay = secondaryDisplaySelector.getSecondaryDisplay(this)
-            .takeIf { externalDisplayMode == ExternalDisplayMode.MELON_DUAL_DS }
+            .takeIf { externalDisplayMode == ExternalDisplayMode.MELON_DUAL_DS && !externalDisplayReleased }
 
         val displays = deviceLayoutDisplayMapper.mapDisplaysToLayoutDisplays(currentDisplay, secondaryDisplay)
         viewModel.setConnectedDisplays(displays)
